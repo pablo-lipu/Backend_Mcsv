@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,17 @@ public class CombustibleController {
 
 	@Autowired
 	ITipoCombustibleService tipoCombustibleService;
+
+	// metodo que me permitira crear un registro de tipo combustible
+
+	@PostMapping("/crear")
+	public ResponseEntity<?> guardar(@RequestBody TipoCombustible combustibleRequest) {
+		System.out.println(
+				"Mi tipo de combustible que viajo desde mi front asia mi back: " + combustibleRequest.toString());
+		
+		TipoCombustible combsutibleGuardado = tipoCombustibleService.crear(combustibleRequest);
+		return ResponseEntity.status(HttpStatus.CREATED).body(combsutibleGuardado);
+	}
 
 	@GetMapping("/todos") /* /combustibles/nombre-combsutibles */
 	public List<TipoCombustible> getAllCombustibles() {
@@ -50,16 +62,13 @@ public class CombustibleController {
 	@Autowired
 	ITipoCombustibleRepository tipoCombustibleRepository;
 
-	
-
 	@GetMapping("/personalizada")
-	public ResponseEntity<TipoCombResponse> otraRespuestaPerso(){
-		ResponseEntity<TipoCombResponse> response= tipoCombustibleService.obtenerTodasTipCombPers();
+	public ResponseEntity<TipoCombResponse> otraRespuestaPerso() {
+		ResponseEntity<TipoCombResponse> response = tipoCombustibleService.obtenerTodasTipCombPers();
 		return response;
 	}
-	
-	
-	//Respuesta mas compleja pero mas completa
+
+	// Respuesta mas compleja pero mas completa
 	@GetMapping("/all-custom")
 	public ResponseEntity<ResponseRestTipoComb> obtenerTodosTipComb() {
 		ResponseRestTipoComb responseCustom = new ResponseRestTipoComb();
@@ -68,10 +77,9 @@ public class CombustibleController {
 		responseCustom.getTipoCombResponse().setListaTipoComb(listComb);
 		return ResponseEntity.status(HttpStatus.OK).body(responseCustom);
 	}
-	
+
 	@PutMapping("/actualizar/{idComb}")
 	public void actualizar(@PathVariable int idComb, @RequestBody TipoCombustible tipoComb) {
-		
-		
 	}
+
 }

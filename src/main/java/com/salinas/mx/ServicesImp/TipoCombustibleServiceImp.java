@@ -25,7 +25,18 @@ public class TipoCombustibleServiceImp implements ITipoCombustibleService {
 	@Autowired
 	ITipoCombustibleCrudRepository tipoCombustibleCrudRepository;
 
-	
+
+	@Override
+	public TipoCombustible crear(TipoCombustible tipoComb) {
+      System.out.println("Objeto en la Imp:  " + tipoComb.toString());
+      
+		TipoCombustible resgitroGusrdadoOff = tipoCombustibleRepository.save(tipoComb);
+      
+      
+		return resgitroGusrdadoOff;
+	}
+
+
 	@Override
 	public ResponseEntity<TipoCombResponse> obtenerTodasTipCombPers() {
 
@@ -71,6 +82,7 @@ public class TipoCombustibleServiceImp implements ITipoCombustibleService {
 		tipoCombustibleCrudRepository.deleteById(idTipoComb);
 
 	}
+
 
 
 
