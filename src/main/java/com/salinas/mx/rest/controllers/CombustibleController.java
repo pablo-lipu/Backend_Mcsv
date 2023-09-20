@@ -18,19 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 import com.salinas.mx.Repository.ITipoCombustibleRepository;
 import com.salinas.mx.Services.ITipoCombustibleService;
 import com.salinas.mx.entities.TipoCombustible;
+import com.salinas.mx.models.Usuario;
 import com.salinas.mx.reponse.ResponseRestTipoComb;
 import com.salinas.mx.reponse.TipoCombResponse;
 
-@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT })
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE })
 @RestController // ESta anotacion se usa principalmente para crear servicios RETs FULL,
 @RequestMapping("/combustibles") // asi creamos una ruta de primer nivel
 public class CombustibleController {
 
 	@Autowired
 	ITipoCombustibleService tipoCombustibleService;
-
 	// metodo que me permitira crear un registro de tipo combustible
 
+
+	@Autowired
+	ITipoCombustibleRepository tipoCombustibleRepository;
+	
 	@PostMapping("/crear")
 	public ResponseEntity<?> guardar(@RequestBody TipoCombustible combustibleRequest) {
 		System.out.println(
@@ -42,16 +46,13 @@ public class CombustibleController {
 
 	@GetMapping("/todos") /* /combustibles/nombre-combsutibles */
 	public List<TipoCombustible> getAllCombustibles() {
-
 		List<TipoCombustible> listaCompletaDTipoDeComb = tipoCombustibleService.listaDeTiposCombustible();
 		return listaCompletaDTipoDeComb;
 	}
 
 	@GetMapping("/un-tipo-combustible/{id_combustible}") // localhost:8080/combustibles/un-tipo-combustible
 	public ResponseEntity<?> getIdCombustible(@PathVariable int id_combustible) {
-
 		TipoCombustible response = tipoCombustibleService.buscarPorId(id_combustible);
-
 		if (response != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(response);
 		} else {
@@ -59,8 +60,6 @@ public class CombustibleController {
 		}
 	}
 
-	@Autowired
-	ITipoCombustibleRepository tipoCombustibleRepository;
 
 	@GetMapping("/personalizada")
 	public ResponseEntity<TipoCombResponse> otraRespuestaPerso() {
